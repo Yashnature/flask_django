@@ -1,4 +1,6 @@
-from flask import Flask, render_template, request, redirect, session
+import os
+
+from flask import Flask, render_template, request, redirect, session, send_from_directory
 import re
 from sqlalchemy import create_engine, text, inspect
 from sqlalchemy.engine import make_url
@@ -176,6 +178,21 @@ with app.app_context():
 @app.route('/')
 def home():
     return redirect('/login')
+
+
+@app.route('/favicon.ico')
+def favicon():
+    static_dir = app.static_folder or 'static'
+    ico_name = 'favicon.ico'
+    svg_name = 'logo.svg'
+
+    if os.path.exists(os.path.join(static_dir, ico_name)):
+        return send_from_directory(static_dir, ico_name, mimetype='image/vnd.microsoft.icon')
+
+    if os.path.exists(os.path.join(static_dir, svg_name)):
+        return send_from_directory(static_dir, svg_name, mimetype='image/svg+xml')
+
+    return ('', 204)
 
 # REGISTER
 @app.route('/register', methods=['GET', 'POST'])
