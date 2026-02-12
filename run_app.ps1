@@ -1,0 +1,1 @@
+& "$PSScriptRoot\myvenv\Scripts\python.exe" "$PSScriptRoot\app.py"

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+	<title>Dashboard</title>
+</head>
+<body>
+	<div id="react-widget" class="react-widget"></div>
+	<div class="container dashboard">
+		<div class="card">
+			<div class="avatar">{{ name[0]|upper }}</div>
+			<h2>Welcome, {{ name }}</h2>
+			<p class="small-note">You're signed in to Mobile Banking Registration System. Manage your session or log out below.</p>
+			<div style="margin-top:18px">
+				<a class="logout" href="/logout"><button>Logout</button></a>
+			</div>
+		</div>
+	</div>
+	<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+	<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+	<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+	<script type="text/babel" src="{{ url_for('static', filename='app.jsx') }}"></script>
+</body>
+</html>

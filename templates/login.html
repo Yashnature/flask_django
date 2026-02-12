@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Login</title>
+</head>
+<body>
+    <div id="react-widget" class="react-widget"></div>
+    <div class="container">
+        <div class="top-brand">
+            <img src="{{ url_for('static', filename='logo.svg') }}" class="brand-logo" alt="Mobile Banking Registration System">
+            <div>
+                <div class="brand-title">Mobile Banking Registration System</div>
+                <div class="small-note">User Login Form</div>
+            </div>
+        </div>
+
+        <h2>Welcome back</h2>
+        {% if error %}
+          <div style="color: #fb7185; margin-bottom:12px; text-align:center">{{ error }}</div>
+        {% endif %}
+        <form method="POST">
+            <label class="input-label" for="email">Email</label>
+            <input id="email" type="email" name="email" placeholder="you@company.com" required>
+
+            <label class="input-label" for="password">Password</label>
+            <input id="password" type="password" name="password" placeholder="••••••••" required>
+
+            <div class="form-foot">
+                <label class="remember"><input type="checkbox" name="remember"> Remember me</label>
+                <a class="link small-note" href="#">Forgot?</a>
+            </div>
+
+            <div style="margin-top:14px"><button type="submit">Sign in</button></div>
+        </form>
+
+        <div class="muted small" style="margin-top:16px">
+            <span>New here?</span> <a class="link" href="/register">Create an account</a>
+        </div>
+    </div>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='app.jsx') }}"></script>
+</body>
+</html>
+
+

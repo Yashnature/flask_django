@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Register</title>
+</head>
+<body>
+    <div id="react-widget" class="react-widget"></div>
+    <div class="container">
+        <div class="top-brand">
+            <img src="{{ url_for('static', filename='logo.svg') }}" class="brand-logo" alt="Mobile Banking Registration System">
+            <div>
+                <div class="brand-title">Mobile Banking Registration System</div>
+                <div class="small-note">Create your secure account</div>
+            </div>
+        </div>
+
+        <h2>Create Account</h2>
+        {% if error %}
+          <div style="color: #fb7185; margin-bottom:12px; text-align:center">{{ error }}</div>
+        {% endif %}
+        <form method="POST">
+            <label class="input-label" for="name">Full name</label>
+            <input id="name" type="text" name="name" placeholder="Your name" required value="{{ name|default('') }}">
+
+            <label class="input-label" for="email">Email</label>
+            <input id="email" type="email" name="email" placeholder="you@company.com" required value="{{ email|default('') }}">
+
+            <label class="input-label" for="password">Password</label>
+            <input id="password" type="password" name="password" placeholder="Create a strong password" required pattern="(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}" title="Min 8 chars, include a letter, number, and special character">
+
+            <label class="input-label" for="mpin">MPIN (4 digits)</label>
+            <input id="mpin" type="password" name="mpin" placeholder="4-digit MPIN" required pattern="\d{4}" maxlength="4" inputmode="numeric" title="MPIN must be exactly 4 digits" value="{{ mpin|default('') }}">
+
+            <label class="input-label" for="credit_card">ATM Card Number (12 digits)</label>
+            <input id="credit_card" type="password" name="credit_card" placeholder="12-digit card number" required pattern="\d{12}" minlength="12" maxlength="12" inputmode="numeric" title="ATM card number must be exactly 12 digits" value="{{ credit_card|default('') }}">
+
+            <div style="margin-top:14px"><button type="submit">Create account</button></div>
+        </form>
+        <div class="muted small" style="margin-top:16px">
+            <a class="link" href="/login">Already have an account? Login</a>
+        </div>
+    </div>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='app.jsx') }}"></script>
+</body>
+</html>
+

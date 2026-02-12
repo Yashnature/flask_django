@@ -1,0 +1,7 @@
+{
+  "python.defaultInterpreterPath": "d:\\Project\\My_Learning project\\Login_And logiut\\myvenv\\Scripts\\python.exe",
+  "python.analysis.extraPaths": [
+    "./"
+  ],
+  "python.formatting.provider": "black"
+}
