@@ -13,10 +13,15 @@ from extensions import db
 app = Flask(__name__)
 
 # CONFIGURATION
-app.config['SECRET_KEY'] = 'secret123'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:iloveyou@localhost:5432/Authentication_Database'
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'secret123')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv(
+    'DATABASE_URL',
+    'sqlite:///instance/users.db',
+)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SESSION_TYPE'] = 'filesystem'
+app.config['SESSION_FILE_DIR'] = os.getenv('SESSION_FILE_DIR', '/tmp/flask_session')
+os.makedirs(app.config['SESSION_FILE_DIR'], exist_ok=True)
 
 db.init_app(app)
 
@@ -166,13 +171,19 @@ with app.app_context():
     except OperationalError as exc:
         # Handle first-run case where PostgreSQL server is reachable but DB is missing.
         if "does not exist" in str(exc):
-            ensure_postgres_database_exists(app.config['SQLALCHEMY_DATABASE_URI'])
-            ensure_understandable_table_name()
-            db.create_all()
-            ensure_user_table_columns()
-            migrate_legacy_user_data()
+            try:
+                ensure_postgres_database_exists(app.config['SQLALCHEMY_DATABASE_URI'])
+                ensure_understandable_table_name()
+                db.create_all()
+                ensure_user_table_columns()
+                migrate_legacy_user_data()
+            except Exception as inner_exc:
+                app.logger.exception("Database bootstrap failed: %s", inner_exc)
         else:
-            raise
+            app.logger.exception("Database init failed: %s", exc)
+    except Exception as exc:
+        # Avoid crashing serverless import-time initialization.
+        app.logger.exception("Unexpected startup error: %s", exc)
 
 # HOME → LOGIN
 @app.route('/')
